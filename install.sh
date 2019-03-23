@@ -1,47 +1,47 @@
 ##########################################################################################
 #
-# Magisk Module Installer Script
+# Magisk 模块安装脚本
 #
 ##########################################################################################
 ##########################################################################################
 #
-# Instructions:
+# 说明:
 #
-# 1. Place your files into system folder (delete the placeholder file)
-# 2. Fill in your module's info into module.prop
-# 3. Configure and implement callbacks in this file
-# 4. If you need boot scripts, add them into common/post-fs-data.sh or common/service.sh
-# 5. Add your additional or modified system properties into common/system.prop
+# 1. 把你的文件放到 system 文件夹内 (记得删除 placeholder 文件)
+# 2. 把你的模块信息填入 module.prop 文件
+# 3. 在该文件中进行配置并实现回调
+# 4. 如果你需要使用启动脚本, 请写入到 common/post-fs-data.sh 或 common/service.sh 文件中
+# 5. 将新增/修改的系统属性添加到 common/system.prop 文件中
 #
 ##########################################################################################
 
 ##########################################################################################
-# Config Flags
+# 配置标志
 ##########################################################################################
 
-# Set to true if you do *NOT* want Magisk to mount
-# any files for you. Most modules would NOT want
-# to set this flag to true
+# 如果您不想让 Magisk 挂载任何文件
+# 请将该变量设置为 true
+# 绝大多数模块都不希望将此变量设置为 true
 SKIPMOUNT=false
 
-# Set to true if you need to load system.prop
+# 如果你需要加载 system.prop, 请将该变量设置为 true
 PROPFILE=false
 
-# Set to true if you need post-fs-data script
+# 如果你需要使用 post-fs-data 脚本, 请将该变量设置为 true
 POSTFSDATA=false
 
-# Set to true if you need late_start service script
+# 如果你需要使用 late_start 服务脚本, 请将该变量设置为 true
 LATESTARTSERVICE=false
 
 ##########################################################################################
-# Replace list
+# 替换列表
 ##########################################################################################
 
-# List all directories you want to directly replace in the system
-# Check the documentations for more info why you would need this
+# 列出所有需要在 system 中直接替换的目录
+# 关于在什么情况下需要使用, 请查看文档以获取信息
 
-# Construct your list in the following format
-# This is an example
+# 请按以下格式编写列表
+# 这只是个示例
 REPLACE_EXAMPLE="
 /system/app/Youtube
 /system/priv-app/SystemUI
@@ -49,77 +49,77 @@ REPLACE_EXAMPLE="
 /system/framework
 "
 
-# Construct your own list here
+# 请在这里编写你自己的列表
 REPLACE="
 "
 
 ##########################################################################################
 #
-# Function Callbacks
+# 函数回调
 #
-# The following functions will be called by the installation framework.
-# You do not have the ability to modify update-binary, the only way you can customize
-# installation is through implementing these functions.
+# 安装框架将会调用以下函数
+# 你无法修改 update-binary 文件
+# 唯一可以实现自定义安装的方法就是实现这些函数
 #
-# When running your callbacks, the installation framework will make sure the Magisk
-# internal busybox path is *PREPENDED* to PATH, so all common commands shall exist.
-# Also, it will make sure /data, /system, and /vendor is properly mounted.
+# 在运行你的回调时, 安装框架可以确保 Magisk 内部 busybox 的路径已添加到 PATH 变量的前面
+# 因此所有常用的命令都应该是可用的
+# 当然, 可以保证 /data, /system, /vendor 分区都已正确挂载
 #
 ##########################################################################################
 ##########################################################################################
 #
-# The installation framework will export some variables and functions.
-# You should use these variables and functions for installation.
+# 安装框架将会导出一些变量和函数
+# 你应该使用这些变量和函数进行安装
 #
-# ! DO NOT use any Magisk internal paths as those are NOT public API.
-# ! DO NOT use other functions in util_functions.sh as they are NOT public API.
-# ! Non public APIs are not guranteed to maintain compatibility between releases.
+# ! 请不要使用任何 Magisk 内部路径, 因为它们不是公共 API
+# ! 请不要使用 util_functions.sh 中的其他函数, 因为它们不是公共 API
+# ! 非公共 API 不能保证维护版本之间的兼容性
 #
-# Available variables:
+# 可用变量:
 #
-# MAGISK_VER (string): the version string of current installed Magisk
-# MAGISK_VER_CODE (int): the version code of current installed Magisk
-# BOOTMODE (bool): true if the module is currently installing in Magisk Manager
-# MODPATH (path): the path where your module files should be installed
-# TMPDIR (path): a place where you can temporarily store files
-# ZIP (path): your module's installation zip
-# ARCH (string): the architecture of the device. Value is either arm, arm64, x86, or x64
-# IS64BIT (bool): true if $ARCH is either arm64 or x64
-# API (int): the API level (Android version) of the device
+# MAGISK_VER (string): 当前已安装 Magisk 的版本字符串
+# MAGISK_VER_CODE (int): 当前已安装 Magisk 的版本代码
+# BOOTMODE (bool): 如果当前正在 Magisk Manager 中安装该模块, 则为 true
+# MODPATH (path): 该路径为模块文件的安装路径
+# TMPDIR (path): 该路径可以存放临时文件
+# ZIP (path): 该路径为你的模块安装包(zip 文件)的路径
+# ARCH (string): 当前设备的架构. 该值可能为 arm, arm64, x86, 或 x64
+# IS64BIT (bool): 如果 $ARCH 值为 arm64 或 x64, 则为 true
+# API (int): 当前设备的 API 等级(Android 版本)
 #
-# Availible functions:
+# 可用函数:
 #
 # ui_print <msg>
-#     print <msg> to console
-#     Avoid using 'echo' as it will not display in custom recovery's console
+#     打印 <msg> 到终端
+#     请避免使用 'echo', 因为它不会在第三方 Recovery 的终端中显示
 #
 # abort <msg>
-#     print error message <msg> to console and terminate installation
-#     Avoid using 'exit' as it will skip the termination cleanup steps
+#     打印错误信息 <msg> 到终端, 并终止安装
+#     请避免使用 'exit', 因为这将会跳过终止清理步骤
 #
 # set_perm <target> <owner> <group> <permission> [context]
-#     if [context] is empty, it will default to "u:object_r:system_file:s0"
-#     this function is a shorthand for the following commands
+#     如果 [context] 参数为空, 则默认值为 "u:object_r:system_file:s0"
+#     此函数是以下命令的简写
 #       chown owner.group target
 #       chmod permission target
 #       chcon context target
 #
 # set_perm_recursive <directory> <owner> <group> <dirpermission> <filepermission> [context]
-#     if [context] is empty, it will default to "u:object_r:system_file:s0"
-#     for all files in <directory>, it will call:
+#     如果 [context] 参数为空, 则默认值为 "u:object_r:system_file:s0"
+#     对于 <directory> 中的所有文件, 将会执行:
 #       set_perm file owner group filepermission context
-#     for all directories in <directory> (including itself), it will call:
+#     对于 <directory> 中的所有目录(包括目录本身), 将会执行:
 #       set_perm dir owner group dirpermission context
 #
 ##########################################################################################
 ##########################################################################################
-# If you need boot scripts, DO NOT use general boot scripts (post-fs-data.d/service.d)
-# ONLY use module scripts as it respects the module status (remove/disable) and is
-# guaranteed to maintain the same behavior in future Magisk releases.
-# Enable boot scripts by setting the flags in the config section above.
+# 如果您需要使用启动脚本, 请不要使用常规的启动脚本 (post-fs-data.d/service.d)
+# 只能使用模块脚本, 因为它遵循模块的状态 (remove/disable)
+# 并且可以保证在将来的 Magisk 版本中保持相同的行为
+# 请通过设置上面配置部分中的标志来启用启动脚本
 ##########################################################################################
 
-# Set what you want to display when installing your module
+# 设置在安装模块时要显示的内容
 
 print_modname() {
   ui_print "*******************************"
@@ -127,28 +127,28 @@ print_modname() {
   ui_print "*******************************"
 }
 
-# Copy/extract your module files into $MODPATH in on_install.
+# on_install 函数实现将模块文件复制/提取到 $MODPATH
 
 on_install() {
-  # The following is the default implementation: extract $ZIP/system to $MODPATH
-  # Extend/change the logic to whatever you want
+  # 以下是默认实现: 提取 $ZIP/system 到 $MODPATH
+  # 你可以依据你的需求扩展/修改逻辑
   ui_print "- Extracting module files"
   unzip -o "$ZIP" 'system/*' -d $MODPATH >&2
 }
 
-# Only some special files require specific permissions
-# This function will be called after on_install is done
-# The default permissions should be good enough for most cases
+# 只有一些特殊文件需要特定权限
+# 该函数将在 on_install 执行完成后调用
+# 大多数情况, 默认权限应该就足够好了
 
 set_permissions() {
-  # The following is the default rule, DO NOT remove
+  # 以下为默认规则, 请勿删除
   set_perm_recursive $MODPATH 0 0 0755 0644
 
-  # Here are some examples:
+  # 一些举例:
   # set_perm_recursive  $MODPATH/system/lib       0     0       0755      0644
   # set_perm  $MODPATH/system/bin/app_process32   0     2000    0755      u:object_r:zygote_exec:s0
   # set_perm  $MODPATH/system/bin/dex2oat         0     2000    0755      u:object_r:dex2oat_exec:s0
   # set_perm  $MODPATH/system/lib/libart.so       0     0       0644
 }
 
-# You can add more functions to assist your custom script code
+# 您可以添加更多的函数来协助你的自定义脚本代码
