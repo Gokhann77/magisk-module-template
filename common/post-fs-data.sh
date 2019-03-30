@@ -1,9 +1,7 @@
 #!/system/bin/sh
-# Do NOT assume where your module will be located.
-# ALWAYS use $MODDIR if you need to know where this script
-# and module is placed.
-# This will make sure your module will still work
-# if Magisk change its mount point in the future
+# 请不要假设你的模块位于何处
+# 如果你需要知道该脚本的位置, 或是该模块的位置, 请始终使用 $MODDIR 变量获取
+# 这样做可以保证将来如果 Magisk 更改了挂载点, 你的模块仍然可以正常工作
 MODDIR=${0%/*}
 
-# This script will be executed in post-fs-data mode
+# 该脚本会以 post-fs-data 模式执行

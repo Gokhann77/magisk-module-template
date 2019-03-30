@@ -1,7 +1,7 @@
-# Magisk Installer
+# Magisk 安装程序
 
-**Update `README.md` if you want to submit your module to the online repo!**
+**如果你想要将你的模块提交到线上 repo, 请更新 `README.md` !**
 
-For more information about how to use this module installer, please refer to [documentations](https://topjohnwu.github.io/Magisk/guides.html)
+关于如何使用此模块安装器的更多信息, 请查看该[文档](https://topjohnwu.github.io/Magisk/guides.html)
 
-If you are not familiar with the Markdown syntax, you can start by experimenting on GitHub's online Markdown editor, which will let you preview before publishing. If you need more help, the [Markdown Cheat Sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) will be handy.
+如果你不擅长 Markdown 语法, 你可以在 GitHub 的在线 Markdown 编辑器里开始试验, 以便让你在正式发布之前预览. 如果你需要更多帮助, 访问 [Markdown Cheat Sheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) 会更加便利.

@@ -1,10 +1,10 @@
 #!/sbin/sh
-# This is a dummy file that should be replaced with a proper installer script
+# 这只是一个虚拟文件, 你应该使用合适的安装程序脚本来替换
 
-# If you are creating a module locally for personal usage or testing,
-# download the script in the following URL:
+# 如果你是在本地创建模块以供个人使用或测试,
+# 请通过以下 URL 下载脚本:
 # https://github.com/topjohnwu/Magisk/blob/master/scripts/module_installer.sh
-# And replace this script with the downloaded script
+# 并用下载到的脚本替换该脚本
 
-# Error, this script should always be replaced
+# 触发错误, 必须替换此脚本
 exit 1
